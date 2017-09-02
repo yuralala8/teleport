@@ -19,11 +19,8 @@ class App extends Component {
   }
 
     handleSearch = (searchTerm) => {
-      this.setState({
-      input: searchTerm
-    },
-    this.fetchData(searchTerm)
-    )
+      console.log('running a search now')
+      this.fetchData(searchTerm)
   }
 
 
@@ -47,6 +44,7 @@ class App extends Component {
     );
   }
 }
+
 
 // render={(match)=> <div>{console.log(match)}</div>}
 
