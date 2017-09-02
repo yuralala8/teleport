@@ -56,10 +56,11 @@ class City extends React.Component {
 		));
 		return (
 			<div>
-			<h1>{this.state.data.name}</h1>
+				<div className="city-header" style={{backgroundImage: 'url(' + this.state.img + ')', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+					<h1 className="city-title">{this.state.data.name}</h1>
+				</div>
 			<p>Population: {this.state.data.population}</p>
 			<p>Continent: {this.state.urbanArea.continent}</p>
-			<p><img src={this.state.img} alt={this.state.data.name} /></p>
 			<p>{this.state.urbanArea.error}</p>
 			  {this.state.mapLoaded ? <CityGoogleMap
 			  	onMapLoad={this.mapLoaded}
