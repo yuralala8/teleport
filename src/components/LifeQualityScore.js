@@ -7,7 +7,9 @@ class LifeQualityScore extends React.Component {
 	)
 		return (
 			<div className="score-wrapper">
+				<h2>Summary</h2>
 				<div className="summary" dangerouslySetInnerHTML= {{__html: this.props.scoreData.summary}} />
+				<h2>Life Quality Scores</h2>
 				<div className="scores">
 					{ scores }
 				</div>
