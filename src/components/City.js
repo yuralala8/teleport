@@ -1,6 +1,7 @@
 import React from 'react'
 import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 import LifeQualityScore from './LifeQualityScore'
+import SalaryScore from './SalaryScore'
 
 class City extends React.Component {
 
@@ -15,6 +16,7 @@ class City extends React.Component {
 		urbanArea: '',
 		img: '',
 		scoreData: {categories: []},
+		salaryData: {salaries: []},
 	}
 
 	componentWillMount = () => {
@@ -37,11 +39,21 @@ class City extends React.Component {
 	}
 
 	fetchUrbanArea = (url) => {
-		fetch(url).then(res => res.json().then(json => this.setState({urbanArea: json}, 
-			() => {fetch(url + 'scores/')
+		fetch(url).then(res => res.json()
+			.then(json => this.setState({urbanArea: json}, this.fetchScoreData(url))))
+			.then(response => this.fetchImage(this.state.urbanArea._links["ua:images"].href))
+	}
+
+	fetchScoreData = (url) => {
+			fetch(url + 'scores/')
+				.then(res => res.json())
+				.then(json => this.setState({scoreData: json}, this.fetchSalaryData(url)))
+	}
+
+	fetchSalaryData = (url) => {
+		fetch(url + 'salaries/')
 			.then(res => res.json())
-			.then(json => this.setState({scoreData: json}))} )))
-		.then(response => this.fetchImage(this.state.urbanArea._links["ua:images"].href))
+			.then(json => this.setState({salaryData: json}))
 	}
 
 	fetchImage = (url) => {
@@ -71,6 +83,7 @@ class City extends React.Component {
 			<p>Population: {this.state.data.population}</p>
 			<p>Continent: {this.state.urbanArea.continent}</p>
 			<LifeQualityScore scoreData={this.state.scoreData}/>
+			<SalaryScore salaryData={this.state.salaryData} />
 			  {this.state.mapLoaded ? <CityGoogleMap
 			  	onMapLoad={this.mapLoaded}
 			    containerElement={
