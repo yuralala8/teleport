@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
+
 import './App.css';
 import Search from './components/Search'
 import City from './components/City'
@@ -19,11 +19,8 @@ class App extends Component {
   }
 
     handleSearch = (searchTerm) => {
-      this.setState({
-      input: searchTerm
-    },
-    this.fetchData(searchTerm)
-    )
+      console.log('running a search now')
+      this.fetchData(searchTerm)
   }
 
 
@@ -36,17 +33,29 @@ class App extends Component {
 
   }
 
+
   render() {
+  const Home = () => (
+      <div  className='container'>
+        <div className='inner'>
+          <div className='inner'>
+            <h1 className="home-title">Teleport</h1>
+            <Search onSearch={this.handleSearch}/>
+          </div>
+            <SearchResults results={this.state.searchResults} />
+        </div>
+      </div>
+    )
     // console.log(this.state)
     return (
       <div>
-      <Search onSearch={this.handleSearch}/>
-      <SearchResults results={this.state.searchResults} />
-      <Route exact path="/search/:id" render={(match) => <City geocode={match}/>}/>
+        <Route exact path='/' component={Home} />
+        <Route exact path="/search/:id" render={(match) => <City geocode={match}/>}/>
       </div>
     );
   }
 }
+
 
 // render={(match)=> <div>{console.log(match)}</div>}
 

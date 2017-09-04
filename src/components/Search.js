@@ -9,9 +9,11 @@ class Search extends React.Component {
 		}
 	}
 
-	handleClick = () => {
+	handleSubmit = (event) => {
+		event.preventDefault()
 		this.props.onSearch(this.state.input)
-		}
+		this.setState({input: ""})
+	}
 
 	handleInput = (event) => {
 		this.setState({
@@ -22,8 +24,9 @@ class Search extends React.Component {
 	render(){
 		return(
 			<div>
-				<input type="text" value={this.state.input} onChange={this.handleInput}/>
-				<input type="submit" onClick={this.handleClick}/>
+				<form onSubmit={this.handleSubmit}>
+					<input type="text" value={this.state.input} onChange={this.handleInput} placeholder="New York, New York"/>
+				</form>
 			</div>
 			)
 	}
