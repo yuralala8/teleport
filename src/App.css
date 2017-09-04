@@ -48,6 +48,9 @@ h1, h2, h3, h4, h5, p, input, li {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap: 1rem;
+    max-width: 600px;
+    margin-left: 2em;
+    margin-right: 2em;
 }
 
 .search-wrapper a {
@@ -79,4 +82,32 @@ h1, h2, h3, h4, h5, p, input, li {
   height: 300px;
   width: 100%;
   position: relative;
+}
+
+.city-header:before {
+  content: '';
+  background: rgba(0,0,0,.3);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+}
+
+.score-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 2em;
+}
+
+.rating-bar {
+  height: 20px;
+  width: 200px;
+  display: flex;
+  justify-content: flex-start;
+  background: #f3f3f3;
+}
+
+.rating-bar .bar {
+
 }

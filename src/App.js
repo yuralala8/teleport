@@ -38,9 +38,11 @@ class App extends Component {
   const Home = () => (
       <div  className='container'>
         <div className='inner'>
-          <h1 className="home-title">Teleport</h1>
-          <Search onSearch={this.handleSearch}/>
-          <SearchResults results={this.state.searchResults} />
+          <div className='inner'>
+            <h1 className="home-title">Teleport</h1>
+            <Search onSearch={this.handleSearch}/>
+          </div>
+            <SearchResults results={this.state.searchResults} />
         </div>
       </div>
     )
@@ -48,7 +50,6 @@ class App extends Component {
     return (
       <div>
         <Route exact path='/' component={Home} />
-        <Route exact path="/" render={() =><SearchResults results={this.state.searchResults} />} />
         <Route exact path="/search/:id" render={(match) => <City geocode={match}/>}/>
       </div>
     );

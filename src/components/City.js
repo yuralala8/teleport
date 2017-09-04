@@ -1,6 +1,6 @@
 import React from 'react'
 import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
-
+import LifeQualityScore from './LifeQualityScore'
 
 class City extends React.Component {
 
@@ -13,7 +13,8 @@ class City extends React.Component {
 
 		}},
 		urbanArea: '',
-		img: ''
+		img: '',
+		scoreData: {categories: []},
 	}
 
 	componentWillMount = () => {
@@ -36,17 +37,24 @@ class City extends React.Component {
 	}
 
 	fetchUrbanArea = (url) => {
-		fetch(url).then(res => res.json().then(json => this.setState({urbanArea: json})))
+		fetch(url).then(res => res.json().then(json => this.setState({urbanArea: json}, 
+			() => {fetch(url + 'scores/')
+			.then(res => res.json())
+			.then(json => this.setState({scoreData: json}))} )))
 		.then(response => this.fetchImage(this.state.urbanArea._links["ua:images"].href))
 	}
 
 	fetchImage = (url) => {
-		fetch(url).then(response => response.json().then(json => this.setState({img: json.photos[0].image.web}))).then(() => this.setState({mapLoaded: true}))
+		fetch(url).then(response => response.json()
+			.then(json => this.setState({img: json.photos[0].image.web})))
+			.then(() => this.setState({mapLoaded: true}
+			))
 	}
 
 	mapLoaded = () => this.setState({mapLoaded: true})
 
 	render() {
+		console.log(this.state)
 		const CityGoogleMap = withGoogleMap(props => (
   		<GoogleMap  	
 		    defaultZoom={10}
@@ -59,9 +67,10 @@ class City extends React.Component {
 				<div className="city-header" style={{backgroundImage: 'url(' + this.state.img + ')', backgroundSize: 'cover', backgroundPosition: 'center'}}>
 					<h1 className="city-title">{this.state.data.name}</h1>
 				</div>
+			<p style={{color: 'red'}}>{this.state.urbanArea.error}</p>
 			<p>Population: {this.state.data.population}</p>
 			<p>Continent: {this.state.urbanArea.continent}</p>
-			<p>{this.state.urbanArea.error}</p>
+			<LifeQualityScore scoreData={this.state.scoreData}/>
 			  {this.state.mapLoaded ? <CityGoogleMap
 			  	onMapLoad={this.mapLoaded}
 			    containerElement={
