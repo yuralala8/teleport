@@ -21,11 +21,13 @@ class SalaryScore extends React.Component {
 	render() {
 		const salariesByJobOptions = this.props.salaryData.salaries.map((item, index) => <option value={item.job.id} key={index}> {item.job.title} </option>)
 		return (
-			<div className="score-wrapper">
-				<h2>Salary By Position</h2>
-				<select onChange={this.handleChange} value={this.state.selectedJob}>
-					{salariesByJobOptions}
-				</select>
+			<div className="score-wrapper salary">
+				<div className="salary-search">
+					<h2>Salary By Position</h2>
+					<select onChange={this.handleChange} value={this.state.selectedJob}>
+						{salariesByJobOptions}
+					</select>
+				</div>
 				{this.state.selectedJobData.job.title !== '' ? 
 				<div className="salary-info">
 					<span style={{textTransform: 'uppercase', letterSpacing: '1px'}}>Median Salary</span>

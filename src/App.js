@@ -4,6 +4,7 @@ import './App.css';
 import Search from './components/Search'
 import City from './components/City'
 import SearchResults from './components/SearchResults'
+import CityComparison from './components/CityComparison'
 import { Route } from 'react-router-dom';
 
 
@@ -51,6 +52,8 @@ class App extends Component {
       <div>
         <Route exact path='/' component={Home} />
         <Route exact path="/search/:id" render={(match) => <City geocode={match}/>}/>
+        <Route exact path='/compare-cities/:cities' render={(match) => <CityComparison cities={match}/>}/>
+      
       </div>
     );
   }

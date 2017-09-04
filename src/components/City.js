@@ -2,6 +2,7 @@ import React from 'react'
 import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 import LifeQualityScore from './LifeQualityScore'
 import SalaryScore from './SalaryScore'
+import CompareDropdown from './CompareDropdown'
 
 class City extends React.Component {
 
@@ -10,19 +11,32 @@ class City extends React.Component {
 			latlon: {
 				longitude: 0,
 				latitude: 0
+
 			}
 
-		}},
+		},
+		_links: {
+			['city:timezone']: {
+				name: ""
+			},
+
+			['city:urban_area']: {
+				href: ""
+		}
+	}
+		
+	},
 		urbanArea: '',
 		img: '',
 		scoreData: {categories: []},
 		salaryData: {salaries: []},
+		allUrbanAreas: []
 	}
 
 	componentWillMount = () => {
 		console.log(this.props)
 		this.fetchCityInfo(this.props.geocode.match.params.id)
-		// this.fetchUrbanArea(this.state.data._links["city:urban_area"].href)
+		this.fetchAllUrbanAreas()
 	}
 
 	componentWillReceiveProps = (nextProps) => {
@@ -63,6 +77,14 @@ class City extends React.Component {
 			))
 	}
 
+	fetchAllUrbanAreas = () => {
+		let url = 'https://api.teleport.org/api/urban_areas'
+		fetch(url)
+		.then(res => res.json())
+		.then(json => this.setState({allUrbanAreas: json._links["ua:item"]}))
+	}
+
+
 	mapLoaded = () => this.setState({mapLoaded: true})
 
 	render() {
@@ -79,10 +101,10 @@ class City extends React.Component {
 				<div className="city-header" style={{backgroundImage: 'url(' + this.state.img + ')', backgroundSize: 'cover', backgroundPosition: 'center'}}>
 					<h1 className="city-title">{this.state.data.name}</h1>
 				</div>
-			<p style={{color: 'red'}}>{this.state.urbanArea.error}</p>
-			<p>Population: {this.state.data.population}</p>
-			<p>Continent: {this.state.urbanArea.continent}</p>
-			<LifeQualityScore scoreData={this.state.scoreData}/>
+			<div className="score-wrapper">
+					<p style={{color: 'red'}}>{this.state.urbanArea.error}</p>
+			</div>
+			<LifeQualityScore scoreData={this.state.scoreData} population={this.state.data.population} continent={this.state.urbanArea.continent} timezone={this.state.data._links["city:timezone"].name}/>
 			<SalaryScore salaryData={this.state.salaryData} />
 			  {this.state.mapLoaded ? <CityGoogleMap
 			  	onMapLoad={this.mapLoaded}
@@ -94,6 +116,7 @@ class City extends React.Component {
 			    }
 			    defaultCenter={{ lat: this.state.data.location.latlon.latitude, lng: this.state.data.location.latlon.longitude }}
 				 /> : null  }
+			<CompareDropdown allUrbanAreas={this.state.allUrbanAreas} currentUrbanArea={this.state.data._links["city:urban_area"].href}/>
 			</div>
 			)
 	}

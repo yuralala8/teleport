@@ -94,10 +94,22 @@ h1, h2, h3, h4, h5, p, input, li {
   position: absolute;
 }
 
+.rating-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+
 .score-wrapper {
   max-width: 600px;
   margin: 3em auto;
   padding: 0 2em;
+}
+
+.score-wrapper.salary {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .rating-bar {
@@ -108,8 +120,16 @@ h1, h2, h3, h4, h5, p, input, li {
   background: #f3f3f3;
 }
 
+.salary-search {
+  width: 50%;
+  float: left;
+}
+
 .salary-info {
-  margin-top: 2em;
+  width: 50%;
+  float: left;
+  text-align: right;
+
 }
 
 .salary-info h4 span {
