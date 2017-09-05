@@ -1,5 +1,5 @@
 import React from 'react'
-import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+import { withGoogleMap, GoogleMap } from "react-google-maps";
 import LifeQualityScore from './LifeQualityScore'
 import SalaryScore from './SalaryScore'
 import CompareDropdown from './CompareDropdown'
@@ -49,7 +49,25 @@ class City extends React.Component {
 		.then(res => res.json())
 		.then( json => this.setState({data: json}, () => {
 			this.fetchUrbanArea(this.state.data._links["city:urban_area"].href)
-		})).catch(error => this.setState({urbanArea: {error: 'No associated urban area found'}}))
+		})).catch(error => this.setState({
+			// this is pretty rough and should just be refactor into some default state
+
+			urbanArea: {
+				error: 'No associated urban area found'
+			}, 
+		data: {
+			...this.state.data,
+			_links: {
+				["city:urban_area"]: {
+				href: ''
+					},
+				["city:timezone"]: {
+					name: ''
+				}
+				}
+			}
+		}
+		))
 	}
 
 	fetchUrbanArea = (url) => {
@@ -101,6 +119,7 @@ class City extends React.Component {
 				<div className="city-header" style={{backgroundImage: 'url(' + this.state.img + ')', backgroundSize: 'cover', backgroundPosition: 'center'}}>
 					<h1 className="city-title">{this.state.data.name}</h1>
 				</div>
+			<CompareDropdown allUrbanAreas={this.state.allUrbanAreas} currentUrbanArea={this.state.data._links["city:urban_area"].href}/>
 			<div className="score-wrapper">
 					<p style={{color: 'red'}}>{this.state.urbanArea.error}</p>
 			</div>
@@ -116,7 +135,6 @@ class City extends React.Component {
 			    }
 			    defaultCenter={{ lat: this.state.data.location.latlon.latitude, lng: this.state.data.location.latlon.longitude }}
 				 /> : null  }
-			<CompareDropdown allUrbanAreas={this.state.allUrbanAreas} currentUrbanArea={this.state.data._links["city:urban_area"].href}/>
 			</div>
 			)
 	}
