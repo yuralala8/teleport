@@ -5,8 +5,8 @@ class CityComparison extends React.Component {
 
 	state = {
 		cityData: {
-			current: {image: '', categories: [{score_out_of_10:0}]},
-			selected: {image: '', categories: [{score_out_of_10: 0}]}
+			current: {image: '', categories: [{score_out_of_10:0}], teleport_city_score: 0},
+			selected: {image: '', categories: [{score_out_of_10: 0}], teleport_city_score: 0}
 		},
 		currentCityName: this.props.cities.match.params.cities.split('-and-')[1],
 		selectedCityName: this.props.cities.match.params.cities.split('-and-')[0],
@@ -92,8 +92,9 @@ class CityComparison extends React.Component {
 					</div>
 				</div>
 				<div className="score-wrapper" style={{display: 'flex', flexWrap: 'wrap'}}>
-					<div className="half"> {currentRatings} </div>
-					<div className="half"> {selectedRatings} </div>
+					<div className="half"> {currentRatings} <h3>Total Teleport Score: <br />{this.state.cityData.current.teleport_city_score.toFixed(2)}</h3></div>
+					<div className="half"> {selectedRatings} <h3>Total Teleport Score: <br />{this.state.cityData.selected.teleport_city_score.toFixed(2)}</h3></div>
+
 				</div>
 			</div>
 			)
